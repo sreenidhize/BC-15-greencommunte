@@ -1,0 +1,26 @@
+version: '3.1'
+
+services:
+  app:
+    image: springnew:latest
+    container_name: app
+    ports:
+     - 8080:8080
+    depends_on:
+      - db
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/jobs
+      - SPRING_DATASOURCE_USERNAME=jobs_usr
+      - SPRING_DATASOURCE_PASSWORD=us3rs
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+
+  db:
+    image: dhanrajnath/postgres
+    container_name: db
+    ports:
+     - 5432:5432
+    environment:
+      - POSTGRES_USER=jobs_usr
+      - POSTGRES_PASSWORD=us3rs
+      - POSTGRES_DB=jobs
+    
