@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserJobMappingRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">job-management-service</a> &gt; <a href="index.source.html" class="el_package">com.greencommute.jobmanagementservice.persistence.details</a> &gt; <span class="el_source">UserJobMappingRepository.java</span></div><h1>UserJobMappingRepository.java</h1><pre class="source lang-java linenums">package com.greencommute.jobmanagementservice.persistence.details;
+
+import com.google.common.base.Preconditions;
+import com.greencommute.jobmanagementservice.dto.response.ImmutableLiteJobResponse;
+import com.greencommute.jobmanagementservice.persistence.IUserJobMappingRepository;
+import org.jdbi.v3.core.Jdbi;
+import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
+import java.util.List;
+import java.util.UUID;
+
+@Repository
+public class UserJobMappingRepository implements IUserJobMappingRepository {
+
+    private final Jdbi fJdbi;
+
+<span class="fc" id="L18">    public UserJobMappingRepository(final DataSource dataSource) {</span>
+<span class="fc" id="L19">        Preconditions.checkNotNull(dataSource, &quot;UserJobMapping data source&quot;);</span>
+<span class="fc" id="L20">        fJdbi = Jdbi.create(dataSource);</span>
+<span class="fc" id="L21">    }</span>
+
+    static final String USER_ID_PARAM = &quot;userId&quot;;
+
+    static final String GET_SAVED_JOB_BY_USER_ID_QUERY = &quot;SELECT j.*, o.* FROM user_job_mappings m JOIN jobs j ON  m.job_id=j.id AND m.user_id=:userId JOIN organisations o ON j.company_id=o.id&quot;;
+    static final String SAVE_JOB_QUERY = &quot;INSERT INTO user_job_mappings (user_id, job_id) VALUES (:userId, :jobId)&quot;;
+    static final String UNSAVE_JOB_QUERY = &quot;DELETE FROM user_job_mappings WHERE user_id=:userId AND job_id=:jobId&quot;;
+
+    @Override
+    public List&lt;ImmutableLiteJobResponse&gt; findSavedJobs(final UUID userId) {
+<span class="fc" id="L31">        Preconditions.checkNotNull(userId, &quot;User id&quot;);</span>
+<span class="fc" id="L32">        return fJdbi.withHandle(handle -&gt;</span>
+<span class="fc" id="L33">                handle.createQuery(GET_SAVED_JOB_BY_USER_ID_QUERY)</span>
+<span class="fc" id="L34">                        .bind(USER_ID_PARAM, userId)</span>
+<span class="fc" id="L35">                        .map(new LiteJobResponseMapper())</span>
+<span class="fc" id="L36">                        .list());</span>
+    }
+
+    @Override
+    public void saveJob(final UUID userId, final UUID jobId) {
+<span class="fc" id="L41">        Preconditions.checkNotNull(userId, &quot;Null user id&quot;);</span>
+<span class="fc" id="L42">        Preconditions.checkNotNull(jobId, &quot;Job id&quot;);</span>
+<span class="fc" id="L43">        fJdbi.withHandle(handle -&gt;</span>
+<span class="fc" id="L44">                handle.createUpdate(SAVE_JOB_QUERY)</span>
+<span class="fc" id="L45">                        .bind(USER_ID_PARAM, userId)</span>
+<span class="fc" id="L46">                        .bind(&quot;jobId&quot;, jobId)</span>
+<span class="fc" id="L47">                        .execute());</span>
+<span class="fc" id="L48">    }</span>
+
+    @Override
+    public void unSaveJob(final UUID userId, final UUID jobId) {
+<span class="fc" id="L52">        Preconditions.checkNotNull(userId, &quot;User id&quot;);</span>
+<span class="fc" id="L53">        Preconditions.checkNotNull(jobId, &quot;Job id&quot;);</span>
+<span class="fc" id="L54">        fJdbi.withHandle(handle -&gt;</span>
+<span class="fc" id="L55">                handle.createUpdate(UNSAVE_JOB_QUERY)</span>
+<span class="fc" id="L56">                        .bind(USER_ID_PARAM, userId)</span>
+<span class="fc" id="L57">                        .bind(&quot;jobId&quot;, jobId)</span>
+<span class="fc" id="L58">                        .execute());</span>
+<span class="fc" id="L59">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

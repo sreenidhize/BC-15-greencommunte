@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JobRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">job-management-service</a> &gt; <a href="index.source.html" class="el_package">com.greencommute.jobmanagementservice.persistence.details</a> &gt; <span class="el_source">JobRepository.java</span></div><h1>JobRepository.java</h1><pre class="source lang-java linenums">package com.greencommute.jobmanagementservice.persistence.details;
+
+import com.google.common.base.Preconditions;
+import com.greencommute.jobmanagementservice.dto.response.ImmutableJobResponse;
+import com.greencommute.jobmanagementservice.dto.response.ImmutableLiteJobResponse;
+import com.greencommute.jobmanagementservice.model.ImmutableGetJobsQueryParams;
+import com.greencommute.jobmanagementservice.persistence.IJobRepository;
+import org.jdbi.v3.core.Jdbi;
+import org.springframework.stereotype.Repository;
+
+import javax.sql.DataSource;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+
+@Repository
+public class JobRepository implements IJobRepository {
+
+    private final Jdbi fJdbi;
+
+    static final String GET_JOBS_QUERY = &quot;select * from fn_fetch_jobs(:isGreenCommute, :skills, :jobType, :experienceLevel, :geography, :distance) join organisations ON company_id=organisations.id ;&quot;;
+    static final String GET_JOB_BY_ID_QUERY = &quot;select * from jobs join organisations ON jobs.company_id=organisations.id where jobs.id=:jobId&quot;;
+
+<span class="fc" id="L25">    public JobRepository(final DataSource dataSource) {</span>
+<span class="fc" id="L26">        Preconditions.checkNotNull(dataSource, &quot;Jobs data source&quot;);</span>
+<span class="fc" id="L27">        fJdbi = Jdbi.create(dataSource);</span>
+<span class="fc" id="L28">    }</span>
+
+    @Override
+    public List&lt;ImmutableLiteJobResponse&gt; findAllJobs(final ImmutableGetJobsQueryParams filter) {
+<span class="fc" id="L32">        Preconditions.checkNotNull(filter, &quot;Filter&quot;);</span>
+<span class="fc" id="L33">        Optional&lt;Double&gt; lat = filter.getLat();</span>
+<span class="fc" id="L34">        Optional&lt;Double&gt; lon = filter.getLon();</span>
+<span class="fc" id="L35">        Optional&lt;Integer&gt; distance = filter.getDistance();</span>
+<span class="pc bpc" id="L36" title="3 of 6 branches missed.">        final String geography = lat.isPresent() &amp;&amp; lon.isPresent() &amp;&amp; distance.isPresent() ?</span>
+<span class="pc" id="L37">                &quot;POINT(&quot;+ lat.get() + &quot; &quot; + lon.get() + &quot;)&quot; : null;</span>
+<span class="fc" id="L38">        return fJdbi.withHandle(handle -&gt;</span>
+<span class="fc" id="L39">                handle.createQuery(GET_JOBS_QUERY)</span>
+<span class="fc" id="L40">                    .bind(&quot;isGreenCommute&quot;, filter.getIsGreenCommute())</span>
+<span class="fc" id="L41">                    .bind(&quot;skills&quot;, filter.getSkills())</span>
+<span class="fc" id="L42">                    .bind(&quot;jobType&quot;, filter.getJobType())</span>
+<span class="fc" id="L43">                    .bind(&quot;experienceLevel&quot;, filter.getExperienceLevel())</span>
+<span class="fc" id="L44">                    .bind(&quot;geography&quot;, geography)</span>
+<span class="fc" id="L45">                    .bind(&quot;distance&quot;, distance.orElse(null))</span>
+<span class="fc" id="L46">                    .map(new LiteJobResponseMapper())</span>
+<span class="fc" id="L47">                    .list());</span>
+    }
+
+    @Override
+    public ImmutableJobResponse findJobById(final UUID jobId) {
+<span class="fc" id="L52">        Preconditions.checkNotNull(jobId, &quot;Job id&quot;);</span>
+
+<span class="fc" id="L54">        return fJdbi.withHandle(handle -&gt;</span>
+<span class="fc" id="L55">                handle.createQuery(GET_JOB_BY_ID_QUERY)</span>
+<span class="fc" id="L56">                        .bind(&quot;jobId&quot;, jobId)</span>
+<span class="fc" id="L57">                        .map(new JobResponseMapper())</span>
+<span class="fc" id="L58">                        .one());</span>
+    }
+
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

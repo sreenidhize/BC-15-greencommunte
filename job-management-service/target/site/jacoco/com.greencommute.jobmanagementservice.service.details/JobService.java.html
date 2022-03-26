@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JobService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">job-management-service</a> &gt; <a href="index.source.html" class="el_package">com.greencommute.jobmanagementservice.service.details</a> &gt; <span class="el_source">JobService.java</span></div><h1>JobService.java</h1><pre class="source lang-java linenums">package com.greencommute.jobmanagementservice.service.details;
+
+import com.google.common.base.Preconditions;
+import com.greencommute.jobmanagementservice.dto.response.ImmutableJobResponse;
+import com.greencommute.jobmanagementservice.dto.response.ImmutableLiteJobResponse;
+import com.greencommute.jobmanagementservice.exception.JobNotFoundException;
+import com.greencommute.jobmanagementservice.model.ImmutableGetJobsQueryParams;
+import com.greencommute.jobmanagementservice.persistence.IJobRepository;
+import com.greencommute.jobmanagementservice.service.IJobService;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.UUID;
+
+@Service
+public class JobService implements IJobService {
+
+    private final IJobRepository fJobRepository;
+
+<span class="fc" id="L20">    public JobService(final IJobRepository jobRepository){</span>
+<span class="fc" id="L21">        Preconditions.checkNotNull(jobRepository, &quot;Job repository&quot;);</span>
+<span class="fc" id="L22">        fJobRepository = jobRepository;</span>
+<span class="fc" id="L23">    }</span>
+
+    @Override
+    public List&lt;ImmutableLiteJobResponse&gt; findAllJobs(final ImmutableGetJobsQueryParams filter) {
+<span class="fc" id="L27">        return fJobRepository.findAllJobs(filter);</span>
+    }
+
+    @Override
+    public ImmutableJobResponse findJobById(final UUID jobId) {
+<span class="fc" id="L32">        Preconditions.checkNotNull(jobId, &quot;job id&quot;);</span>
+        ImmutableJobResponse job;
+        try {
+<span class="fc" id="L35">            job = fJobRepository.findJobById(jobId);</span>
+        }
+<span class="fc" id="L37">        catch (Exception e){</span>
+<span class="fc" id="L38">            throw new JobNotFoundException(&quot;Invalid Job Id&quot;);</span>
+<span class="fc" id="L39">        }</span>
+<span class="fc" id="L40">        return job;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

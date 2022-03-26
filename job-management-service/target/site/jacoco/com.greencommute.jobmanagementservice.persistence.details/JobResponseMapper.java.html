@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JobResponseMapper.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">job-management-service</a> &gt; <a href="index.source.html" class="el_package">com.greencommute.jobmanagementservice.persistence.details</a> &gt; <span class="el_source">JobResponseMapper.java</span></div><h1>JobResponseMapper.java</h1><pre class="source lang-java linenums">package com.greencommute.jobmanagementservice.persistence.details;
+
+import com.google.common.base.Preconditions;
+import com.greencommute.jobmanagementservice.dto.response.ImmutableJobResponse;
+import com.greencommute.jobmanagementservice.model.ExperienceLevel;
+import com.greencommute.jobmanagementservice.model.JobType;
+import com.greencommute.jobmanagementservice.model.Skills;
+import com.greencommute.jobmanagementservice.utils.Constants;
+import org.jdbi.v3.core.mapper.RowMapper;
+import org.jdbi.v3.core.statement.StatementContext;
+
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
+
+<span class="fc" id="L19">class JobResponseMapper implements RowMapper&lt;ImmutableJobResponse&gt; {</span>
+
+    private List&lt;Skills&gt; convertSkills(final String[] args){
+<span class="fc" id="L22">        Preconditions.checkNotNull(args, &quot;Skills array&quot;);</span>
+<span class="fc" id="L23">        return Arrays.stream(args).map(Skills::valueOf).collect(Collectors.toList());</span>
+    }
+
+    private List&lt;String&gt; convertRequirements(final String[] args){
+<span class="fc" id="L27">        Preconditions.checkNotNull(args, &quot;Requirements array&quot;);</span>
+<span class="fc" id="L28">        return Arrays.stream(args).collect(Collectors.toList());</span>
+    }
+
+    @Override
+    public ImmutableJobResponse map(final ResultSet rs, final StatementContext ctx) throws SQLException {
+<span class="fc" id="L33">        Preconditions.checkNotNull(rs, &quot;results stream&quot;);</span>
+<span class="fc" id="L34">        Preconditions.checkNotNull(ctx, &quot;context&quot;);</span>
+<span class="fc" id="L35">        return  ImmutableJobResponse.builder()</span>
+<span class="fc" id="L36">                .iD(UUID.fromString(rs.getString(Constants.ID)))</span>
+<span class="fc" id="L37">                .title(rs.getString(Constants.TITLE))</span>
+<span class="fc" id="L38">                .isActive(rs.getBoolean(Constants.IS_ACTIVE))</span>
+<span class="fc" id="L39">                .jobType(JobType.valueOf(rs.getString(Constants.JOB_TYPE)))</span>
+<span class="fc" id="L40">                .isGreenCommute(rs.getBoolean(Constants.IS_GREEN_COMMUTE))</span>
+<span class="fc" id="L41">                .datePosted(rs.getDate(Constants.DATE_POSTED).toLocalDate())</span>
+<span class="fc" id="L42">                .description(rs.getString(Constants.DESCRIPTION))</span>
+<span class="fc" id="L43">                .address(rs.getString(Constants.ADDRESS))</span>
+<span class="fc" id="L44">                .experienceLevel(ExperienceLevel.valueOf(rs.getString(Constants.EXPERIENCE_LEVEL)))</span>
+<span class="fc" id="L45">                .companyName(rs.getString(Constants.COMPANY_NAME))</span>
+<span class="fc" id="L46">                .companyLogoUrl(rs.getString(Constants.COMPANY_LOGO_URL))</span>
+<span class="fc" id="L47">                .skills(convertSkills((String[]) rs.getArray(Constants.SKILLS).getArray()))</span>
+<span class="fc" id="L48">                .location((Double[]) rs.getArray(Constants.LOCATION).getArray())</span>
+<span class="fc" id="L49">                .requirements(convertRequirements((String[]) rs.getArray(Constants.REQUIREMENTS).getArray()))</span>
+<span class="fc" id="L50">                .build();</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ExceptionHandlerManager.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">job-management-service</a> &gt; <a href="index.source.html" class="el_package">com.greencommute.jobmanagementservice</a> &gt; <span class="el_source">ExceptionHandlerManager.java</span></div><h1>ExceptionHandlerManager.java</h1><pre class="source lang-java linenums">package com.greencommute.jobmanagementservice;
+
+import static org.springframework.http.HttpStatus.BAD_REQUEST;
+import static org.springframework.http.HttpStatus.CONFLICT;
+import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
+import static org.springframework.http.HttpStatus.METHOD_NOT_ALLOWED;
+import static org.springframework.http.HttpStatus.NOT_FOUND;
+
+import java.time.Instant;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
+
+import com.greencommute.jobmanagementservice.exception.JobManagementServiceException;
+import com.greencommute.jobmanagementservice.exception.JobNotFoundException;
+import com.greencommute.jobmanagementservice.model.ImmutableErrorResponse;
+
+@RestControllerAdvice
+<span class="fc" id="L22">public class ExceptionHandlerManager {</span>
+
+    @ExceptionHandler
+    public ResponseEntity&lt;ImmutableErrorResponse&gt; handleBusinessException(JobManagementServiceException exception) {
+<span class="fc" id="L26">        final ImmutableErrorResponse errorResponse = ImmutableErrorResponse.builder()</span>
+<span class="fc" id="L27">                .errorMessage(exception.getMessage())</span>
+<span class="fc" id="L28">                .description(&quot;CONFLICT&quot;)</span>
+<span class="fc" id="L29">                .statusCode(CONFLICT.value())</span>
+<span class="fc" id="L30">                .timeStamp(Instant.now().toEpochMilli())</span>
+<span class="fc" id="L31">                .build();</span>
+<span class="fc" id="L32">        return new ResponseEntity&lt;&gt;(errorResponse, CONFLICT);</span>
+    }
+
+    @ExceptionHandler
+    public ResponseEntity&lt;ImmutableErrorResponse&gt; handleJobNotFoundException(JobNotFoundException exception) {
+<span class="fc" id="L37">        final ImmutableErrorResponse errorResponse = ImmutableErrorResponse.builder()</span>
+<span class="fc" id="L38">                .errorMessage(exception.getMessage())</span>
+<span class="fc" id="L39">                .description(&quot;Not Found&quot;)</span>
+<span class="fc" id="L40">                .statusCode(NOT_FOUND.value())</span>
+<span class="fc" id="L41">                .timeStamp(Instant.now().toEpochMilli())</span>
+<span class="fc" id="L42">                .build();</span>
+<span class="fc" id="L43">        return new ResponseEntity&lt;&gt;(errorResponse, NOT_FOUND);</span>
+    }
+
+    @ExceptionHandler
+    public ResponseEntity&lt;ImmutableErrorResponse&gt; handleServerError(Exception exception) {
+<span class="fc" id="L48">        final ImmutableErrorResponse errorResponse = ImmutableErrorResponse.builder()</span>
+<span class="fc" id="L49">                .errorMessage(&quot;Request could not be processed due to an internal error.Please try again later.&quot;)</span>
+<span class="fc" id="L50">                .description(&quot;Internal Server Error&quot;)</span>
+<span class="fc" id="L51">                .statusCode(INTERNAL_SERVER_ERROR.value())</span>
+<span class="fc" id="L52">                .timeStamp(Instant.now().toEpochMilli())</span>
+<span class="fc" id="L53">                .build();</span>
+<span class="fc" id="L54">        return new ResponseEntity&lt;&gt;(errorResponse, INTERNAL_SERVER_ERROR);</span>
+    }
+
+    @ExceptionHandler
+    public ResponseEntity&lt;ImmutableErrorResponse&gt; handleInvalidParameter(MethodArgumentTypeMismatchException exception) {
+<span class="fc" id="L59">        final ImmutableErrorResponse errorResponse = ImmutableErrorResponse.builder()</span>
+<span class="fc" id="L60">                .errorMessage(&quot;Invalid input received by the server. input : &quot;+exception.getValue())</span>
+<span class="fc" id="L61">                .description(&quot;Bad Request&quot;)</span>
+<span class="fc" id="L62">                .statusCode(BAD_REQUEST.value())</span>
+<span class="fc" id="L63">                .timeStamp(Instant.now().toEpochMilli())</span>
+<span class="fc" id="L64">                .build();</span>
+<span class="fc" id="L65">        return new ResponseEntity&lt;&gt;(errorResponse, BAD_REQUEST);</span>
+    }
+    
+    @ExceptionHandler
+    public ResponseEntity&lt;ImmutableErrorResponse&gt; handleMethodNotAllowed(HttpRequestMethodNotSupportedException exception) {
+<span class="fc" id="L70">    	final ImmutableErrorResponse errorResponse = ImmutableErrorResponse.builder()</span>
+<span class="fc" id="L71">                .errorMessage(&quot;Http method not supported. Method : &quot;+ exception.getMethod())</span>
+<span class="fc" id="L72">                .description(&quot;Method not allowed&quot;)</span>
+<span class="fc" id="L73">                .statusCode(METHOD_NOT_ALLOWED.value())</span>
+<span class="fc" id="L74">                .timeStamp(Instant.now().toEpochMilli())</span>
+<span class="fc" id="L75">                .build();</span>
+<span class="fc" id="L76">        return new ResponseEntity&lt;&gt;(errorResponse, METHOD_NOT_ALLOWED);</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

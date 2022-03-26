@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JobController.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">job-management-service</a> &gt; <a href="index.source.html" class="el_package">com.greencommute.jobmanagementservice.controller</a> &gt; <span class="el_source">JobController.java</span></div><h1>JobController.java</h1><pre class="source lang-java linenums">package com.greencommute.jobmanagementservice.controller;
+
+import com.google.common.base.Preconditions;
+import com.greencommute.jobmanagementservice.dto.response.ImmutableJobResponse;
+import com.greencommute.jobmanagementservice.dto.response.ImmutableLiteJobResponse;
+import com.greencommute.jobmanagementservice.model.ExperienceLevel;
+import com.greencommute.jobmanagementservice.model.ImmutableGetJobsQueryParams;
+import com.greencommute.jobmanagementservice.model.JobType;
+import com.greencommute.jobmanagementservice.model.Skills;
+import com.greencommute.jobmanagementservice.service.IJobService;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Optional;
+import java.util.UUID;
+
+@CrossOrigin
+@RestController
+public class JobController {
+
+    private final IJobService fJobService;
+
+<span class="fc" id="L26">    public JobController(final IJobService jobService) {</span>
+<span class="fc" id="L27">        Preconditions.checkNotNull(jobService, &quot;Job Service&quot;);</span>
+<span class="fc" id="L28">        fJobService = jobService;</span>
+<span class="fc" id="L29">    }</span>
+
+    /**
+     *&lt;p&gt;This method will fetch all jobs after applying the search filters&lt;/p&gt;
+     * @return jobResponseList
+     */
+    @GetMapping(value = &quot;/api/jobs&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity&lt;List&lt;ImmutableLiteJobResponse&gt;&gt; fetchAllJob(
+            @RequestParam(required = false, name = &quot;is_green_commute&quot;) final Optional&lt;Boolean&gt; isGreenCommute,
+            @RequestParam(required = false, name = &quot;skill&quot;) final Optional&lt;Skills&gt; skills,
+            @RequestParam(required = false, name = &quot;lat&quot;) final Optional&lt;Double&gt; lat,
+            @RequestParam(required = false, name = &quot;lon&quot;) final Optional&lt;Double&gt; lon,
+            @RequestParam(required = false, name = &quot;distance&quot;) final Optional&lt;Integer&gt; distance,
+            @RequestParam(required = false, name = &quot;job_type&quot;) final Optional&lt;JobType&gt; jobType,
+            @RequestParam(required = false, name = &quot;experience_level&quot;) final Optional&lt;ExperienceLevel&gt; expLevel) {
+
+<span class="fc" id="L45">        ImmutableGetJobsQueryParams filter = ImmutableGetJobsQueryParams.builder()</span>
+<span class="fc" id="L46">                .isGreenCommute(isGreenCommute)</span>
+<span class="fc" id="L47">                .skills(skills)</span>
+<span class="fc" id="L48">                .jobType(jobType)</span>
+<span class="fc" id="L49">                .experienceLevel(expLevel)</span>
+<span class="fc" id="L50">                .lat(lat)</span>
+<span class="fc" id="L51">                .lon(lon)</span>
+<span class="fc" id="L52">                .distance(distance)</span>
+<span class="fc" id="L53">                .build();</span>
+
+<span class="fc" id="L55">        return ResponseEntity.ok().body(fJobService.findAllJobs(filter));</span>
+    }
+
+    /**
+     *&lt;p&gt;This method will fetch the job details by an id&lt;/p&gt;
+     * @return jobResponse
+     */
+    @GetMapping(value = &quot;/api/jobs/{jobId}&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity&lt;ImmutableJobResponse&gt; fetchJobById( @PathVariable final UUID jobId) {
+<span class="fc" id="L64">        Preconditions.checkNotNull(jobId, &quot;Job id&quot;);</span>
+<span class="fc" id="L65">        ImmutableJobResponse job=fJobService.findJobById(jobId);</span>
+
+<span class="fc" id="L67">        return ResponseEntity.ok().body(job);</span>
+    }
+
+    /**
+     *&lt;p&gt;This method will fetch the skills present in the database&lt;/p&gt;
+     * @return skillsList
+     */
+    @GetMapping(value = &quot;/api/skills&quot;, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity&lt;List&lt;Skills&gt;&gt; fetchAllSkills() {
+<span class="fc" id="L76">        return ResponseEntity.ok().body(Arrays.asList(Skills.values()));</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.4.201905082037</span></div></body></html>

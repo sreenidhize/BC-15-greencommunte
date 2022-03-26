@@ -1,0 +1,8 @@
+com/greencommute/jobmanagementservice/persistence/details/TestPostgresConfiguration.class
+com/greencommute/jobmanagementservice/controller/JobControllerTest.class
+com/greencommute/jobmanagementservice/persistence/details/JobRepositoryTest.class
+com/greencommute/jobmanagementservice/controller/UserJobMappingControllerTest.class
+com/greencommute/jobmanagementservice/persistence/details/TestApplicationConfiguration.class
+com/greencommute/jobmanagementservice/persistence/details/UserJobMappingRepositoryTest.class
+com/greencommute/jobmanagementservice/service/details/UserJobMappingServiceTest.class
+com/greencommute/jobmanagementservice/service/details/JobServiceTest.class
