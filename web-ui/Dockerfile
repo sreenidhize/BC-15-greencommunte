@@ -1,4 +1,4 @@
-FROM node: 16
+FROM node:16
 ENV NODE_ENV=main
 
 WORKDIR /app
