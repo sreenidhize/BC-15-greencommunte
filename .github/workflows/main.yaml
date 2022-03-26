@@ -8,8 +8,8 @@ env:
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
   EKS_CLUSTER: ${{ secrets.EKS_CLUSTER }}
   EKS_REGION: ${{ secrets.EKS_REGION }}
-  DOCKER_ID: ${{ secrets.DOCKERHUB_USERNAME }}
-  DOCKER_PW: ${{ secrets.DOCKERHUB_PASSWORD }}
+  DOCKER_ID: ${{ secrets.DOCKERHUB_USER }}
+  DOCKER_PW: ${{ secrets.DOCKERHUB_PASSWD }}
 jobs:
   backend:
     name: BUILD 
@@ -31,9 +31,9 @@ jobs:
         password: ${{ secrets.DOCKERHUB_PASSWD }}
     - uses: actions/checkout@v2
     - name: build image 
-      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/greencommute:latest
+      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USER}}/greencommute:latest
     - name: docker push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/greencommute:latest
+      run: docker push ${{ secrets.DOCKERHUB_USER }}/greencommute:latest
   
  
   frontend:
@@ -62,6 +62,6 @@ jobs:
       run: |
         docker login -u $DOCKER_USER -p $DOCKER_PASSWD
     - name: build image 
-      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USERNAME }}/greencommute:latest
+      run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USER }}/greencommute:latest
     - name: docker push
-      run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/greencommute:latest
+      run: docker push ${{ secrets.DOCKERHUB_USER }}/greencommute:latest
