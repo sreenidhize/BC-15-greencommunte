@@ -1,0 +1,32 @@
+replicaCount: 2
+
+
+image1: 
+    repository: srinidhi2020/react-fr
+    tag: v2
+image2:
+     repository: dhanrajnath/postgres
+     tag: latest
+image3:
+     repository: srinidhi2020/springnew
+     tag: v1
+          
+secert1: 
+    Postgres_user: jobs_usr
+    Postgres_passwd: us3rs
+    Postgres_db : jobs
+secert2: 
+    jobs_url: jdbc:postgresql://myrelease-database:5432/jobs
+    jobs_usr: jobs_usr
+    jobs_passwd : us3rs
+    jobs_update: update   
+
+service1:
+  type: LoadBalancer
+  port: 3000
+service2:
+  type: ClusterIP
+  port: 5432
+service3:
+  type: LoadBalancer
+  port: 8080
