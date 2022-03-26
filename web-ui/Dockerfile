@@ -1,4 +1,4 @@
-FROM node:14
+FROM node: 16
 ENV NODE_ENV=main
 
 WORKDIR /app
@@ -9,6 +9,6 @@ RUN yarn install --production
 
 COPY . .
 
-EXPOSE 8080
+EXPOSE 3000
 
 CMD ["yarn","start"]
