@@ -61,7 +61,6 @@ jobs:
         with:
           node-version: 14.x
       - run: npm ci
-      - run: npm test
       - run: npm run build
 
       - uses: actions/checkout@v2
