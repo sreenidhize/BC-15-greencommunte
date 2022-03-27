@@ -78,8 +78,6 @@ jobs:
 
       - name: Deploy
         uses: scalive/github-action-eks-helm@master
-        env:
-          # KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
       - name: helm deploy
         run: helm upgrade myrelease green-c
         
