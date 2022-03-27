@@ -4,13 +4,13 @@ on:
     branches:
       - master
 env:
-  DOCKER_ID: ${{ secrets.DOCKERHUB_USER }}
-  DOCKER_PW: ${{ secrets.DOCKERHUB_PASSWD }}
-  AWS_DEFAULT_REGION: us-east-2
-  AWS_DEFAULT_OUTPUT: yaml
-  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
-  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  # DOCKER_ID: ${{ secrets.DOCKERHUB_USER }}
+  # DOCKER_PW: ${{ secrets.DOCKERHUB_PASSWD }}
+  # AWS_DEFAULT_REGION: us-east-2
+  # AWS_DEFAULT_OUTPUT: yaml
+  # AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  # AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  # AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
 jobs:
   backend:
