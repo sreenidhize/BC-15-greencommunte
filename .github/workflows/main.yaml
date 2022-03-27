@@ -6,6 +6,10 @@ on:
 env:
   DOCKER_ID: ${{ secrets.DOCKERHUB_USER }}
   DOCKER_PW: ${{ secrets.DOCKERHUB_PASSWD }}
+  access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+
 jobs:
   backend:
     name: BUILD 
@@ -36,25 +40,10 @@ jobs:
   
  
   frontend:
-
-    runs-on: ubuntu-latest
+   runs-on: ubuntu-latest
     defaults:
       run:
         working-directory: web-ui
-
-    # strategy:
-    #   matrix:
-    #     node-version: [15.x]
-   
-    #steps:
-    # - uses: actions/checkout@v2
-    # - name: Use Node.js ${{ matrix.node-version }}
-    #   uses: actions/setup-node@v2
-    #   with:
-    #     node-version: ${{ matrix.node-version }}
-    # - run: npm ci
-    # - run: npm run build --if-present
-    # - run: npm test
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v2.1.5
@@ -75,18 +64,22 @@ jobs:
       - name: docker push
         run: docker push ${{ secrets.DOCKERHUB_USER }}/greencommute:latest
 
-      - name: Install kubectl
-        run: |
-          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-          curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
-          echo "$(<kubectl.sha256) kubectl" | sha256sum --check
-          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
-          kubectl version --client
-     - name: Configure AWS Credentials
-       uses: aws-actions/configure-aws-credentials@v1
-       with:
-        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        aws-region: us-east-2
-     - name: Connect to EKS cluster 
-       run: aws eks --region $EKS_REGION update-kubeconfig --name $EKS_CLUSTER
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: us-east-2
+
+      - name: Deploy
+        uses: scalive/github-action-eks-helm@master
+        env:
+          KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      - name: helm deploy
+        run: helm upgrade myrelease greenc
+        
