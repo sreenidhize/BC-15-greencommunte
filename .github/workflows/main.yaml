@@ -11,6 +11,7 @@ env:
   AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
   AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
   AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
 jobs:
 
   backend:
@@ -81,13 +82,9 @@ jobs:
       - name: docker push
         run: docker push ${{ secrets.DOCKERHUB_USER }}/greencommute:latest
 
-
   deploy:
-
-      - name: Deploy
-        runs-on: ubuntu-latest
-        environment: production
-
+     runs-on: ubuntu-latest
+     environment: production
     steps:
       - name: Checkout
         uses: actions/checkout@v2
