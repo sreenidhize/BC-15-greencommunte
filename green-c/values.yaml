@@ -2,14 +2,14 @@ replicaCount: 2
 
 
 image1: 
-    repository: srinidhi2020/react-fr
-    tag: v2
+    repository: srinidhi2020/greencommute
+    tag: latest
 image2:
      repository: dhanrajnath/postgres
      tag: latest
 image3:
-     repository: srinidhi2020/springnew
-     tag: v1
+     repository: srinidhi2020/green
+     tag: latest
           
 secert1: 
     Postgres_user: jobs_usr
