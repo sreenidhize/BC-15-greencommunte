@@ -6,6 +6,11 @@ on:
 env:
   DOCKER_ID: ${{ secrets.DOCKERHUB_USER }}
   DOCKER_PW: ${{ secrets.DOCKERHUB_PASSWD }}
+  AWS_DEFAULT_REGION: us-east-2
+  AWS_DEFAULT_OUTPUT: yaml
+  AWS_ACCOUNT_ID: ${{ secrets.AWS_ACCOUNT_ID }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 jobs:
   backend:
     name: BUILD 
@@ -74,3 +79,27 @@ jobs:
         run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USER}}/greencommute:latest
       - name: docker push
         run: docker push ${{ secrets.DOCKERHUB_USER }}/greencommute:latest
+
+ jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: ${{ env.AWS_REGION }}
+
+   - name: helm deploy
+      uses: koslibpro/helm-eks-action@master
+      # env:
+      #   KUBE_CONFIG_DATA: ${{ secrets.KUBE_CONFIG_DATA }}
+      with:
+        command: helm upgrade --install myrelease green-c     
