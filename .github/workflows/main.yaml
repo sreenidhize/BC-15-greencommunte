@@ -74,3 +74,19 @@ jobs:
         run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USER}}/greencommute:latest
       - name: docker push
         run: docker push ${{ secrets.DOCKERHUB_USER }}/greencommute:latest
+
+      - name: Install kubectl
+        run: |
+          curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+          curl -LO "https://dl.k8s.io/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl.sha256"
+          echo "$(<kubectl.sha256) kubectl" | sha256sum --check
+          sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+          kubectl version --client
+     - name: Configure AWS Credentials
+       uses: aws-actions/configure-aws-credentials@v1
+       with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        aws-region: us-east-2
+     - name: Connect to EKS cluster 
+       run: aws eks --region $EKS_REGION update-kubeconfig --name $EKS_CLUSTER
