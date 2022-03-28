@@ -1,4 +1,4 @@
-const { BASE_URL } = window.env || {BASE_URL : 'ae34138365b9b4658b36c22af9346e3e-9d5d996bf8a8c46f.elb.us-east-2.amazonaws.com:8080'};
+const { BASE_URL } = window.env || {BASE_URL : 'http://localhost:8080'};
 
 export const apis = {
   GET_SKILLS: `${BASE_URL}/api/skills`,
