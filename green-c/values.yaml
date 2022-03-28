@@ -3,13 +3,13 @@ replicaCount: 2
 
 image1: 
     repository: srinidhi2020/greencommute
-    tag: latest
+    tag: v1
 image2:
      repository: dhanrajnath/postgres
-     tag: latest
+     tag: laatest
 image3:
      repository: srinidhi2020/green
-     tag: latest
+     tag: v1
           
 secert1: 
     Postgres_user: jobs_usr
