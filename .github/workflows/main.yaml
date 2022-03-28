@@ -89,7 +89,7 @@ jobs:
       - name: Deploy
         uses: scalive/github-action-eks-helm@master
       - name: helm deployment
-        run: helm  install myrelease green-c
+        run: helm  upgarde --install myrelease green-c
         
 
         
