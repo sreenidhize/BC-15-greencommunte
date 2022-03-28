@@ -17,10 +17,10 @@ spec:
             name: myrelease-frontend
             port:
               number: 3000
-      - path: /api/
-        pathType: Prefix
-        backend:
-          service:
-            name: myrelease-backend
-            port:
-              number: 8080
+      # - path: /api/
+      #   pathType: Prefix
+      #   backend:
+      #     service:
+      #       name: myrelease-backend
+      #       port:
+      #         number: 8080

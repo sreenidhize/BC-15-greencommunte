@@ -17,9 +17,9 @@ spec:
       containers:
       - name: frontend
         image: "{{ .Values.image1.repository }}:{{ .Values.image1.tag }}"
-        # env:
-        #  - name: BASE_URL
-        #    value: ae34138365b9b4658b36c22af9346e3e-9d5d996bf8a8c46f.elb.us-east-2.amazonaws.com
+        env:
+         - name: BASE_URL
+           value: http://myrelease-backend:8080
         ports:
           - name: http
             containerPort: 3000
