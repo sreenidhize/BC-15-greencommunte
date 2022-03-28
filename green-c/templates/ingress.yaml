@@ -1,26 +1,26 @@
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: bc-15
-  annotations:
-      nginx.ingress.kubernetes.io/rewrite-target: /
-spec:
-  ingressClassName: nginx 
-  rules:
-  - host: ae34138365b9b4658b36c22af9346e3e-9d5d996bf8a8c46f.elb.us-east-2.amazonaws.com
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: myrelease-frontend
-            port:
-              number: 3000
-      - path: /api/
-        pathType: Prefix
-        backend:
-          service:
-            name: myrelease-backend
-            port:
-              number: 8080
+# apiVersion: networking.k8s.io/v1
+# kind: Ingress
+# metadata:
+#   name: bc-15
+#   annotations:
+#       nginx.ingress.kubernetes.io/rewrite-target: /
+# spec:
+#   ingressClassName: nginx 
+#   rules:
+#   - host: ae34138365b9b4658b36c22af9346e3e-9d5d996bf8a8c46f.elb.us-east-2.amazonaws.com
+#     http:
+#       paths:
+#       - path: /
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: myrelease-frontend
+#             port:
+#               number: 3000
+#       - path: /api/
+#         pathType: Prefix
+#         backend:
+#           service:
+#             name: myrelease-backend
+#             port:
+#               number: 8080
