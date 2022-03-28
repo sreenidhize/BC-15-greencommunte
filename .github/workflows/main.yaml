@@ -11,6 +11,8 @@ env:
   account_id: ${{ secrets.AWS_ACCOUNT_ID }}
   EKS_CLUSTER: ${{ secrets.EKS_CLUSTER }}
   EKS_REGION: ${{ secrets.EKS_REGION }}
+  RELEASE_NAME: myrelease
+
 
 jobs:
   backend:
@@ -83,6 +85,11 @@ jobs:
 
       - name: Deploy
         uses: scalive/github-action-eks-helm@master
+        if: $RELEASE_NAME= myrelease
       - name: helm deployment
-        run: helm upgrade myrelease green-c
+        run: helm upgrade $RELEASE_NAME green-c
+        else: 
+        run: hellm install myrelease green-c
+        
+
         
