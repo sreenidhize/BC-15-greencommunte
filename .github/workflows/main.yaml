@@ -89,10 +89,7 @@ jobs:
       - name: Deploy
         uses: scalive/github-action-eks-helm@master
       - name: helm deployment
-        if: $RELEASE_NAME= myrelease
-        run: helm upgrade $RELEASE_NAME green-c
-        else: 
-        run: hellm install myrelease green-c
+        run: helm upgrade myrelease green-c
         
 
         
