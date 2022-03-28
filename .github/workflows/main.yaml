@@ -39,9 +39,8 @@ jobs:
       run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USER}}/green:latest
     - name: docker push
       run: docker push ${{ secrets.DOCKERHUB_USER }}/green:latest
-
   
-  notify:
+ 
   frontend:
    runs-on: ubuntu-latest
    defaults: 
@@ -67,7 +66,6 @@ jobs:
       - name: docker push
         run: docker push ${{ secrets.DOCKERHUB_USER }}/greencommute:latest
 
-notify:
   deploy:
     runs-on: ubuntu-latest
     steps:
