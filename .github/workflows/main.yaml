@@ -67,7 +67,7 @@ jobs:
       - name: docker push
         run: docker push ${{ secrets.DOCKERHUB_USER }}/greencommute:latest
 
-  notify:
+notify:
   deploy:
     runs-on: ubuntu-latest
     steps:
