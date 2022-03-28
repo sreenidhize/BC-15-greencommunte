@@ -89,7 +89,7 @@ jobs:
       - name: Deploy
         uses: scalive/github-action-eks-helm@master
       - name: helm deployment
-        run: helm upgrade --install bc-15release green-c
+        run: helm upgrade --install myrelease green-c
         
 
         
