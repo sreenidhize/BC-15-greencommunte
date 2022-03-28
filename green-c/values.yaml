@@ -6,7 +6,7 @@ image1:
     tag: v1
 image2:
      repository: dhanrajnath/postgres
-     tag: laatest
+     tag: latest
 image3:
      repository: srinidhi2020/green
      tag: v1
