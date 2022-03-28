@@ -70,6 +70,9 @@ jobs:
 
   deploy:
     runs-on: ubuntu-latest
+    needs: 
+    - frontend
+    - backend
     steps:
       - uses: actions/checkout@v2
 
@@ -85,8 +88,8 @@ jobs:
 
       - name: Deploy
         uses: scalive/github-action-eks-helm@master
-        if: $RELEASE_NAME= myrelease
       - name: helm deployment
+        if: $RELEASE_NAME= myrelease
         run: helm upgrade $RELEASE_NAME green-c
         else: 
         run: hellm install myrelease green-c
