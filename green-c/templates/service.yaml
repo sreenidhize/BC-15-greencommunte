@@ -11,7 +11,7 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: bc
+    app: bc-fr
 
 ---
 
@@ -27,7 +27,7 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: bc
+    app: bc-db
 
 
 ---    
@@ -44,4 +44,4 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: bc
+    app: bc-api

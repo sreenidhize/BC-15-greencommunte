@@ -3,23 +3,23 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-frontend
   labels:
-    app: bc
+    app: bc-fr
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: bc
+      app: bc-fr
   template:
     metadata:
       labels:
-        app: bc
+        app: bc-fr
     spec:
       containers:
       - name: frontend
         image: "{{ .Values.image1.repository }}:{{ .Values.image1.tag }}"
         env:
          - name: BASE_URL
-           value: a7a656c3734664c89852847418878b47-623888298.us-east-2.elb.amazonaws.com
+           value: ae34138365b9b4658b36c22af9346e3e-9d5d996bf8a8c46f.elb.us-east-2.amazonaws.com
         ports:
           - name: http
             containerPort: 3000
@@ -32,16 +32,16 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-database
   labels:
-    app: bc
+    app: bc-db
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: bc
+      app: bc-db
   template:
     metadata:
       labels:
-        app: bc
+        app: bc-db
     spec:
       containers:
       - name: db
@@ -65,16 +65,16 @@ kind: Deployment
 metadata:
   name: {{ .Release.Name }}-backend
   labels:
-    app: bc
+    app: bc-api
 spec:
   replicas: {{ .Values.replicaCount }}
   selector:
     matchLabels:
-      app: bc
+      app: bc-api
   template:
     metadata:
       labels:
-        app: bc
+        app: bc-api
     spec:
       containers:
       - name: backend
