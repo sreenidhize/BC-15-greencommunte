@@ -18,8 +18,8 @@ spec:
       - name: frontend
         image: "{{ .Values.image1.repository }}:{{ .Values.image1.tag }}"
         env:
-         - name: BASE_URL
-           value: http://a4a48790e2daf40d2be98373a56063f0-696098843.us-east-2.elb.amazonaws.com:8080
+        #  - name: BASE_URL
+        #    value: http://a4a48790e2daf40d2be98373a56063f0-696098843.us-east-2.elb.amazonaws.com:8080
         ports:
           - name: http
             containerPort: 3000

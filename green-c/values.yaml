@@ -22,7 +22,7 @@ secert2:
     jobs_update: update   
 
 service1:
-  type: ClusterIP
+  type: LoadBalancer
   port: 3000
 service2:
   type: ClusterIP
