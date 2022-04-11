@@ -3,13 +3,13 @@ replicaCount: 2
 
 image1: 
     repository: srinidhi2020/bc
-    tag: v1
+    tag: latest
 image2:
      repository: dhanrajnath/postgres
-     tag: v1
+     tag: latest
 image3:
      repository: srinidhi2020/front
-     tag: v1
+     tag: latest
           
 secert1: 
     Postgres_user: jobs_usr
