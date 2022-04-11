@@ -53,9 +53,9 @@ jobs:
           password: ${{ secrets.DOCKERHUB_PASSWD }}
       - uses: actions/checkout@v2
       - name: build image 
-        run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USER}}/fr:${{github.run_number}}
+        run: docker build . --file Dockerfile --tag ${{ secrets.DOCKERHUB_USER}}/front:${{github.run_number}}
       - name: docker push
-        run: docker push ${{ secrets.DOCKERHUB_USER }}/fr:${{github.run_number}}
+        run: docker push ${{ secrets.DOCKERHUB_USER }}/front:${{github.run_number}}
 
   deploy:
     runs-on: ubuntu-latest
