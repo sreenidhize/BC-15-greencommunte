@@ -1,3 +1,3 @@
 window.env = Object.freeze({
-    BASE_URL: 'http://ac241ca7fd8d94f59a906f6b49d800bf-1823310798.us-east-2.elb.amazonaws.com:8080',
+    BASE_URL: 'http://a930ad8126b1e42beb09e44e988896a7-1067561967.us-east-2.elb.amazonaws.com:8080',
 });
