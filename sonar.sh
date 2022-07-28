@@ -8,16 +8,16 @@ C="3.0"
 D="4.0"
 if [[ "$value" = "$A" ]];
 then 
-  python3 /home/sring/sonar/cliq1.py
+  python3 /home/runner/work/BC-15-greencommunte/BC-15-greencommunte/cliq1.py
 elif [[ "$value" = "$B" ]];
 then 
-  python3 /home/sring/sonar/cliq2.py
+  python3 /home/runner/work/BC-15-greencommunte/BC-15-greencommunte/cliq2.py
 elif [[ "$value" = "$C" ]];
 then 
-  python3 /home/sring/sonar/cliq3.py
+  python3 /home/runner/work/BC-15-greencommunte/BC-15-greencommunte/cliq3.py
 elif [[ "$value" = "$D" ]];
 then 
-  python3 /home/sring/sonar/cliq4.py
+  python3 /home/runner/work/BC-15-greencommunte/BC-15-greencommunte/cliq4.py
 else 
-  python3 /home/sring/sonar/cliq5.py
+  python3 /home/runner/work/BC-15-greencommunte/BC-15-greencommunte/cliq5.py
 fi  
