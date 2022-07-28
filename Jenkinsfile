@@ -1,12 +1,15 @@
-pipeline {
-    agent any {
-        docker { image 'maven:3-alpine' }
+pipeline{
+    agent any
+    tools {
+        maven 'MAVEN'
     }
     stages {
-        stage('Build') {
-            steps {
-                sh 'mvn clean install'
+        stage('Build Maven') {
+            steps{
+                sh "mvn -Dmaven.test.failure.ignore=true clean package"
+                
             }
         }
-    }
-}
+    }                                                                                                  
+                                
+}                                                                                                         
