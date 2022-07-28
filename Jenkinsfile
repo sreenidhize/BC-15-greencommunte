@@ -6,7 +6,8 @@ pipeline{
     stages {
         stage('Build Maven') {
             steps{
-                sh "cd job-management-service"
+                sh "pwd"
+                sh "cd BC-15-greencommunte/job-management-service"
                 sh "mvn clean install"
                 
             }
