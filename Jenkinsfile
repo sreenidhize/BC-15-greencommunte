@@ -7,7 +7,7 @@ pipeline{
         stage('Build Maven') {
             steps{
                 sh "cd job-management-service"
-                sh "mvn -Dmaven.test.failure.ignore=true clean package"
+                sh "mvn clean install"
                 
             }
         }
