@@ -20,4 +20,6 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       - name: Zohocliq
         run: |
+           ls 
+           pwd
            bash sonar.sh
