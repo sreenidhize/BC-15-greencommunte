@@ -2,7 +2,7 @@
 
 import requests,json,sys,os
 
-ZOHO_TOKEN = os.environ['ZOHO_TOKEN']
+ZOHO_TOKEN=os.environ['ZOHO_TOKEN']
 sentby="Srinidhi"
 subject= "bug report"
 message= 'Current Quality Status is C , "https://sonarcloud.io/dashboard?id=sreenidhize_BC-15-greencommunte&branch=master" '
