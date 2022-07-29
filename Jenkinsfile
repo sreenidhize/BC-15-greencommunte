@@ -1,10 +1,10 @@
 pipeline {
     agent any
     tools {
-        maven 'Maven'
+        maven 'maven'
     }
     stages {
-        stage("Build Maven") {
+        stage("Build maven") {
             steps {
                 sh "cd job-management-service ; mvn clean -DskipTests ; ls"
             }    
