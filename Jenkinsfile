@@ -1,18 +1,15 @@
 pipeline {
     agent any
-     tools{
-        maven "maven"
+    tools {
+        maven 'Maven'
     }
-
     stages {
-        stage ('Compile Stage') {
-
+        stage("Build Maven") {
             steps {
-                withMaven(maven : 'maven') {
-                    sh "cd ./job-management-service ; pwd ; mvn install -DskipTests"
-                }
-            }
+                sh "cd job-management-service ; mvn clean -DskipTests ; ls"
+            }    
+                
         }
-
     }
+    
 }
