@@ -8,7 +8,7 @@ pipeline {
         stage ('Compile Stage') {
 
             steps {
-                withMaven(maven : 'maven') {
+                withMaven(maven : 'Maven') {
                     sh "cd ./job-management-service ; pwd ; mvn install -DskipTests"
                 }
             }
