@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: job-svc
+  labels:
+    app: job
+spec:
+  replicas: 2
+  selector: 
+    matchLabels:
+      app: job
+    
+  template:
+    metadata:
+      name: job
+      labels:
+        app: job
+    spec:
+      containers:
+        - name: backend
+          image: ghcr.io/sreenidhize/greenc15:latest
+          ports:
+            - containerPort: 8080
+      imagePullSecrets: 
+        - name: mysecret
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: job-service
+  labels:
+    app: job
+spec:
+  type: ClusterIP
+  ports:
+  - port: 8080
+    targetPort: 8080
+  selector:
+    app: job      
+    
