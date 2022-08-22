@@ -1,0 +1,9 @@
+stages:
+  - name: Publish my image
+    steps:
+    - publishImageConfig:
+        dockerfilePath: ./web-ui/Dockerfile
+        buildContext: .
+        tag: ghcr.io/sreenidhize/web:latest
+        pushRemote: true
+        registry: ghcr.io
