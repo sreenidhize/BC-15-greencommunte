@@ -9,6 +9,7 @@ jobs:
   sonarcloud:
     name: SonarCloud
     runs-on: self-hosted
+    timeout-minutes: 1
     steps:
       - uses: actions/checkout@v2
         with:
